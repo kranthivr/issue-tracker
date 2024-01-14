@@ -59,6 +59,8 @@ const NavBar = () => {
                     size="2"
                     radius="full"
                     className="cursor-pointer"
+                    //Do the following if avatar image is giving 403 or error
+                    // referrerPolicy="no-referrer"
                   />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
