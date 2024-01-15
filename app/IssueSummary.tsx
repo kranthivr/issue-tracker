@@ -4,12 +4,16 @@ import Link from "next/link";
 import React from "react";
 
 interface Props {
-  open: number;
-  inProgress: number;
-  closed: number;
+  issueTypes: {
+    open: number;
+    inProgress: number;
+    closed: number;
+  };
 }
 
-const IssueSummary = ({ open, inProgress, closed }: Props) => {
+const IssueSummary = ({ issueTypes }: Props) => {
+  const { open, inProgress, closed } = issueTypes;
+
   const containers: {
     label: string;
     value: number;
