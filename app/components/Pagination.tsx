@@ -6,7 +6,7 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { Button, Flex, Text } from "@radix-ui/themes";
+import { Button, Flex, Select, Text } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
@@ -21,7 +21,6 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
   const searchParams = useSearchParams();
 
   const pageCount = Math.ceil(itemCount / pageSize);
-  if (pageCount <= 1) return null;
 
   const changePage = (page: number) => {
     const params = new URLSearchParams(searchParams);
@@ -29,8 +28,30 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
     router.push("?" + params.toString());
   };
 
+  const changePageSize = (pageSize: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", "1");
+    params.set("pageSize", pageSize);
+    router.push("?" + params.toString());
+  };
+
   return (
     <Flex align="center" gap="2">
+      <Select.Root
+        defaultValue={pageSize.toString()}
+        onValueChange={(pageSize) => changePageSize(pageSize)}
+      >
+        <Select.Trigger placeholder="Assign..."></Select.Trigger>
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Page Size</Select.Label>
+            <Select.Item value="5">5</Select.Item>
+            <Select.Item value="10">10</Select.Item>
+            <Select.Item value="15">15</Select.Item>
+            <Select.Item value="20">20</Select.Item>
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
       <Text size="2">
         Page {currentPage} of {pageCount}
       </Text>
