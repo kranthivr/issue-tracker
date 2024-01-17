@@ -1,10 +1,11 @@
 "use client";
 
 import { Skeleton } from "@/app/components";
-import { Issue, User } from "@prisma/client";
+import { Issue, Status, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
@@ -14,11 +15,15 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
 
   if (error) return null;
 
+  const router = useRouter();
+
   const assignIssue = async (userId: string) => {
     try {
       await axios.patch(`/api/issues/${issue.id}`, {
         assignedToUserId: userId || null,
+        status: userId ? Status.IN_PROGRESS : Status.OPEN,
       });
+      router.refresh();
     } catch (error) {
       toast.error("Changes could not be saved");
     }

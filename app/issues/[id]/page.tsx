@@ -8,12 +8,13 @@ import AssigneeSelect from "./AssigneeSelect";
 import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
+import StatusSelect from "./StatusSelect";
 
 interface Props {
   params: { id: string };
 }
 
-const fetchUser = cache((issueId: number) =>
+const fetchIssue = cache((issueId: number) =>
   prisma.issue.findUnique({
     where: { id: issueId },
   })
@@ -22,9 +23,11 @@ const fetchUser = cache((issueId: number) =>
 const IssueDetailPage = async ({ params }: Props) => {
   const session = await getServerSession(authOptions);
 
-  const issue = await fetchUser(parseInt(params.id));
+  const issue = await fetchIssue(parseInt(params.id));
 
   if (!issue) notFound();
+
+  console.log(issue.status);
 
   return (
     <Grid columns={{ initial: "1", sm: "5" }} gap="5">
@@ -35,6 +38,7 @@ const IssueDetailPage = async ({ params }: Props) => {
         <Box>
           <Flex direction="column" gap="4">
             <AssigneeSelect issue={issue} />
+            <StatusSelect issue={issue} />
             <EditIssueButton issueId={issue.id} />
             <DeleteIssueButton issueId={issue.id} />
           </Flex>
@@ -47,7 +51,7 @@ const IssueDetailPage = async ({ params }: Props) => {
 export default IssueDetailPage;
 
 export async function generateMetadata({ params }: Props) {
-  const issue = await fetchUser(parseInt(params.id));
+  const issue = await fetchIssue(parseInt(params.id));
 
   return {
     title: issue?.title,
