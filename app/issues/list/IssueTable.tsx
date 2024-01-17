@@ -11,6 +11,7 @@ export interface IssueQuery {
   page: string;
   pageSize: string;
   sort: string;
+  userId: string;
 }
 
 interface Props {

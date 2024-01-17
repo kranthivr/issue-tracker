@@ -35,6 +35,8 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
     router.push("?" + params.toString());
   };
 
+  if (pageCount <= 0) return null;
+
   return (
     <Flex align="center" gap="2">
       <Select.Root

@@ -5,6 +5,9 @@ import IssueActions from "./IssueActions";
 import IssueTable, { IssueQuery, columnNames } from "./IssueTable";
 import { Flex } from "@radix-ui/themes";
 import { Metadata } from "next";
+import { User } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 interface Props {
   searchParams: IssueQuery;
@@ -16,7 +19,20 @@ const IssuesPage = async ({ searchParams }: Props) => {
     ? searchParams.status
     : undefined;
 
-  const where = { status };
+  const userId = searchParams.userId || null;
+
+  let assignedToUserId;
+  if (userId) {
+    const users = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (users) {
+      assignedToUserId = userId;
+    }
+  }
+
+  const where = { status, assignedToUserId };
 
   const orderBy = columnNames.includes(searchParams.orderBy)
     ? { [searchParams.orderBy]: searchParams.sort }
