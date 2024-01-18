@@ -18,8 +18,6 @@ export async function PATCH(
   if (!validation.success)
     return NextResponse.json(validation.error.format(), { status: 400 });
 
-  console.log(body);
-
   const { assignedToUserId, title, description, status } = body;
 
   if (assignedToUserId) {

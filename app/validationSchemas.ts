@@ -1,4 +1,3 @@
-import { Status } from "@prisma/client";
 import { z } from "zod";
 
 export const issueSchema = z.object({
@@ -20,4 +19,9 @@ export const patchIssueSchema = z.object({
     .optional()
     .nullable(),
   status: z.enum(["OPEN", "IN_PROGRESS", "CLOSED"]).optional(),
+});
+
+export const commentSchema = z.object({
+  comment: z.string().min(1, "comment is required.").max(255),
+  commentIssueId: z.number(),
 });

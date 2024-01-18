@@ -9,6 +9,9 @@ import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
 import StatusSelect from "./StatusSelect";
+import CommentsComponent from "@/app/components/CommentsComponent";
+import { Prisma } from "@prisma/client";
+import { CommentsWithUsers } from "@/app/types";
 
 interface Props {
   params: { id: string };
@@ -27,22 +30,25 @@ const IssueDetailPage = async ({ params }: Props) => {
 
   if (!issue) notFound();
 
-  console.log(issue.status);
-
   return (
     <Grid columns={{ initial: "1", sm: "5" }} gap="5">
       <Box className="md:col-span-4">
         <IssueDetails issue={issue} />
       </Box>
       {session && (
-        <Box>
-          <Flex direction="column" gap="4">
-            <AssigneeSelect issue={issue} />
-            <StatusSelect issue={issue} />
-            <EditIssueButton issueId={issue.id} />
-            <DeleteIssueButton issueId={issue.id} />
-          </Flex>
-        </Box>
+        <>
+          <Box>
+            <Flex direction="column" gap="4">
+              <AssigneeSelect issue={issue} />
+              <StatusSelect issue={issue} />
+              <EditIssueButton issueId={issue.id} />
+              <DeleteIssueButton issueId={issue.id} />
+            </Flex>
+          </Box>
+          <Box className="md:col-span-4 mt-2">
+            <CommentsComponent issueId={issue.id} />
+          </Box>
+        </>
       )}
     </Grid>
   );
