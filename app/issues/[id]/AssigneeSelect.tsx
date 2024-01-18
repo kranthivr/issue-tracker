@@ -9,13 +9,8 @@ import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
-  const { data: users, error, isLoading } = useUsers();
-
-  if (isLoading) return <Skeleton />;
-
-  if (error) return null;
-
   const router = useRouter();
+  const { data: users, error, isLoading } = useUsers();
 
   const assignIssue = async (userId: string) => {
     try {
@@ -28,6 +23,10 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
       toast.error("Changes could not be saved");
     }
   };
+
+  if (isLoading) return <Skeleton />;
+
+  if (error) return null;
 
   return (
     <>
