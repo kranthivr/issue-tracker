@@ -6,9 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Issue {
@@ -36,7 +35,7 @@ model Comment {
   updatedAt      DateTime @updatedAt
   commentUserId  String   @db.VarChar(255)
   commentOfUser  User     @relation(fields: [commentUserId], references: [id])
-  commentIssueId Int      @db.Int
+  commentIssueId Int      @db.Integer
   commentOfIssue Issue    @relation(fields: [commentIssueId], references: [id])
 }
 
